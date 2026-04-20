@@ -1,0 +1,192 @@
+---
+title: "Structure and API Info"
+format: html
+---
+
+## folder tree structure
+
+schertz_council_docs_r2_app/
+├── .gitignore
+├── .Rproj
+├── app.R
+├── refresh_and_deploy_local.R
+├── manifest.json
+├── README.md
+├── .github/
+│   └── workflows/
+│       └── weekly-refresh.yml
+├── R/
+│   ├── 00_config.R
+│   ├── discover_city_hub.R
+│   ├── discover_destinyhosted.R
+│   ├── discover_laserfiche.R
+│   ├── normalize_documents.R
+│   ├── download_documents.R
+│   ├── extract_text.R
+│   ├── build_search_data.R
+│   └── run_pipeline.R
+├── scripts/
+│   ├── update_data.R
+│   └── launchd_runner.sh
+├── data/
+│   └── derived/
+│       ├── documents.rds
+│       ├── refresh_metadata.csv
+│       ├── refresh_comparison_summary.csv
+│       └── refresh_comparison_details.csv
+├── logs/
+└── tmp/
+
+
+## Do not create these inside the project:
+
+
+- data/raw/
+- giant packet PDFs
+- long-term downloaded archives
+- big intermediate CSVs unless truly needed
+
+Those now belong in R2, not in the project folder.
+
+
+## Bring these over from your current Phase 2 project
+
+- deploy_app/app.R → rename/move to new root app.R
+- deploy_app/R/00_config.R → R/00_config.R
+- the pipeline helper files in deploy_app/R/
+- discover_city_hub.R
+- discover_destinyhosted.R
+- discover_laserfiche.R
+- normalize_documents.R
+- download_documents.R
+- extract_text.R
+- build_search_data.R
+- run_pipeline.R
+- your current working scripts/update_data.R
+- your current local combined script logic from refresh_and_deploy_local.R
+- your small derived outputs if you want an initial working seed:
+- documents.rds
+- refresh_metadata.csv
+- refresh_comparison_summary.csv
+- refresh_comparison_details.csv
+
+
+## Do not bring over
+
+
+- deploy_app/data/raw/
+- deploy_app/data/derived/*.csv big intermediates
+- documents_with_text.csv
+- documents_downloaded.csv
+- documents_normalized.csv
+- packet PDFs
+- old GitHub Actions deploy logic
+- laserfiche_archive_seed.rds unless we decide it is still needed after redesign
+
+
+
+## How this differs from the old project
+
+The new project will:
+
+
+- run from the root
+- have app.R at root, like the model project
+- keep only small finished files locally in data/derived
+- use R2 for raw packet storage
+- use launchd for scheduling
+
+
+***avoid deploy_app/ entirely***
+
+
+That is the clean break you wanted.
+
+
+## What app files should be deployed to shinyapps.io
+
+Only these kinds of files:
+
+
+app.R
+R/00_config.R
+any other small helper R files truly needed by the app
+data/derived/documents.rds
+data/derived/refresh_metadata.csv
+
+***Possibly the comparison files too, but only if you want them visible/available.***
+
+
+## What stays local
+
+- project code
+- launchd plist and runner script
+- logs
+- any temporary files
+- local working credentials/config
+- optional small cache files
+
+
+## What lives in R2
+
+- raw agenda PDFs
+- raw packet PDFs
+- optionally extracted text cache for large docs
+- optionally a compact “already seen/downloaded” index if we decide to store it there too
+
+
+## Why this is closer to the model example
+
+Like the model:
+
+- scheduled refresh outside the app
+- app at root
+- thin app
+- separate processing logic
+- small derived outputs
+
+
+## Different from the model only where necessary:
+
+- your raw files are too large, so they go to R2 instead of a local data/ folder inside the repo
+
+
+## What I’d do first
+
+- Create the new RStudio project named:  schertz_council_docs_r2_app
+- Then create only this minimal starter structure:
+    schertz_council_docs_r2_app/├── app.R├── refresh_and_deploy_local.R├── R/├──        scripts/├── data/│   └── derived/├── logs/└── tmp/
+    
+
+
+
+### App file
+
+DONE - deploy_app/app.R → becomes new root app.R 
+
+### R helper files
+
+DONE - deploy_app/R/00_config.R
+DONE - deploy_app/R/discover_city_hub.R
+DONE - deploy_app/R/discover_destinyhosted.R
+DONE - deploy_app/R/discover_laserfiche.R
+DONE - deploy_app/R/normalize_documents.R
+DONE - deploy_app/R/download_documents.R
+DONE - deploy_app/R/extract_text.R
+DONE - deploy_app/R/build_search_data.R
+DONE - deploy_app/R/run_pipeline.R
+
+### Scripts
+
+DONE - scripts/update_data.R
+DONE - your working local refresh/deploy script logic, which will become the new root refresh_and_deploy_local.R
+
+### Small derived seed files
+
+DONE - deploy_app/data/derived/documents.rds
+DONE - deploy_app/data/derived/refresh_metadata.csv
+DONE - deploy_app/data/derived/refresh_comparison_summary.csv
+DONE - deploy_app/data/derived/refresh_comparison_details.csv
+
+
+
