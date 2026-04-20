@@ -5,6 +5,9 @@
 # Project-specific runtime and local artifacts
 
 data/derived/*.csv
+!data/derived/refresh_metadata.csv
+!data/derived/refresh_comparison_summary.csv
+!data/derived/refresh_comparison_details.csv
 data/derived/documents_with_text.rds
 data/derived/documents_normalized.rds
 data/derived/documents_downloaded.rds
